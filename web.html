@@ -1,84 +1,45 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Laurent & Ruby Expense Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 移除 Google Apps Script 特定的 meta 標籤 -->
-    <style>
-        /* 保持與 index.html 相同的樣式 */
-        /* ... 複製 index.html 中的所有樣式 ... */
-    </style>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="viewport" content="width=device-width>, initial-
+scale=1.0">
+
+<title>Display Web</title>
+<style type="text/css">
+html {
+overflow: auto;
+}
+
+html,
+body,
+div,
+iframe {
+margin: 0px;
+padding: 0px;
+height: 100%;
+border: none;
+}
+
+iframe {
+display: block;
+width: 100%;
+border: none;
+overflow-y: auto;
+overflow-x: hidden;
+}
+
+</style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Laurent & Ruby Expense Tracker</h1>
-        <form id="expenseForm">
-            <!-- 保持與 index.html 相同的表單結構 -->
-            <!-- ... 複製 index.html 中的所有表單內容 ... -->
-        </form>
-    </div>
+<iframe src="https://script.google.com/macros/s/AKfycbzwaJ9icklb_rNSY90U4jZO40BCAsApWYO0lLflT_4PSvFsDdhDbQbtCcnT3n0csaix/exec" frameborder="0" marginheight="0" marginwidth="0"
+width="100%" height="100%" scrolling="auto">
+</iframe>
 
-    <script>
-        // 修改表單提交處理
-        function getValues(e) {
-            e.preventDefault();
-            console.log('表單提交觸發');
-
-            const submitButton = document.getElementById('submitButton');
-            submitButton.disabled = true;
-
-            try {
-                if (!validateForm()) {
-                    console.log('表單驗證失敗');
-                    submitButton.disabled = false;
-                    return;
-                }
-
-                const rowData = {
-                    category: document.getElementById("category").value,
-                    item: document.getElementById("item").value,
-                    amount: document.getElementById("amount").value,
-                    payer: document.querySelector('input[name="payer"]:checked').value,
-                    isPersonal: document.querySelector('input[name="isPersonal"]:checked').value,
-                    notes: document.getElementById("notes").value || ''
-                };
-
-                console.log('準備提交數據:', rowData);
-                
-                // 這裡可以添加 GitHub Pages 特定的數據處理邏輯
-                // 例如：發送到某個 API 端點或其他處理方式
-                
-                // 暫時只顯示數據
-                alert("表單數據：\n" + JSON.stringify(rowData, null, 2));
-                
-                // 重置表單
-                document.getElementById("expenseForm").reset();
-                document.querySelector('.select-icon').className = 'select-icon fas fa-question';
-                submitButton.disabled = false;
-
-            } catch (error) {
-                console.error('發生錯誤:', error);
-                alert("發生錯誤：" + error);
-                submitButton.disabled = false;
-            }
-        }
-
-        // 保持其他 JavaScript 函數不變
-        // ... 複製 index.html 中的其他 JavaScript 函數 ...
-
-        // 添加表單事件監聽器
-        var form = document.getElementById("expenseForm");
-        if (form) {
-            form.addEventListener("submit", getValues);
-            console.log('事件監聽器已添加');
-        } else {
-            console.error('找不到表單元素');
-        }
-    </script>
 </body>
+
 </html>
