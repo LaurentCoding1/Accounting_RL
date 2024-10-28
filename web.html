@@ -45,6 +45,17 @@
             }
         }
     </style>
+    <script>
+        // 添加消息監聽器
+        window.addEventListener('message', function(event) {
+            // 確保消息來源是可信的
+            if (event.origin.includes('script.google.com')) {
+                if (event.data && event.data.type === 'alert') {
+                    alert(event.data.message);
+                }
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -54,7 +65,7 @@
         allowfullscreen
         allow="fullscreen; modals; alerts"
         scrolling="yes"
-        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals">
+        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-top-navigation">
     </iframe>
 </body>
 
