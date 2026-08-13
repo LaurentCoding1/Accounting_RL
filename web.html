@@ -4,73 +4,107 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ruby & Laurent 記帳</title>
-    <!-- 引入 Tailwind CSS 以便快速美化頁面 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style type="text/css">
-        /* 基本樣式重設 */
-        /* 基本樣式重設 */
+    <title>Ruby &amp; Laurent 記帳</title>
+
+    <!-- PWA：讓 Android/iOS 可以「加到主畫面」變成像 App 一樣的圖示 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#E23F6B">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RL 記帳">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --cream: #FFF7ED;
+            --ink: #3A2A22;
+            --ink-soft: #7A6A5F;
+            --ruby: #E23F6B;
+            --marigold: #F2A93B;
+        }
+
         html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* 確保沒有多餘滾動條 */
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
         }
 
-        /* 登入容器的樣式 */
         .login-screen {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f3f4f6; /* bg-gray-100 */
-            width: 100%; /* 確保佔滿整個視窗 */
-            height: 100%; /* 確保佔滿整個視窗 */
+            display: flex; align-items: center; justify-content: center;
+            background: var(--cream);
+            background-image:
+                radial-gradient(circle at 10% 10%, rgba(226,63,107,0.12) 0, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(242,169,59,0.14) 0, transparent 42%);
+            width: 100%; height: 100%;
         }
 
-        /* 當 body 有 login-screen 類別時，強制隱藏 main-content */
-        .login-screen #main-content {
-            display: none !important; /* 使用 !important 確保覆蓋所有其他規則 */
-        }
+        .login-screen #main-content { display: none !important; }
+        body:not(.login-screen) #login-container { display: none !important; }
 
-        /* 當 body 沒有 login-screen 類別時，強制隱藏 login-container */
-        body:not(.login-screen) #login-container {
-            display: none !important; /* 使用 !important 確保覆蓋所有其他規則 */
-        }
-
-        /* 主要內容 (iframe) 的容器樣式 */
-        #main-content {
-            width: 100%;
-            height: 100%;
-            display: block; /* 預設為 block，但會被 .login-screen #main-content 覆蓋 */
-        }
-
+        #main-content { width: 100%; height: 100%; display: block; }
         #main-content iframe {
-            display: block;
-            width: 100vw;
-            height: 100vh;
-            border: none;
-            margin: 0;
-            padding: 0;
-            overflow: auto;
-            -webkit-overflow-scrolling: touch;
+            display: block; width: 100vw; height: 100vh; border: none;
+            margin: 0; padding: 0; overflow: auto; -webkit-overflow-scrolling: touch;
         }
 
-        /* 登出按鈕樣式 */
+        #login-container {
+            max-width: 380px; width: 100%;
+            text-align: center;
+            background-color: #fff;
+            padding: 40px 32px;
+            border-radius: 28px;
+            box-shadow: 0 16px 40px rgba(58, 42, 34, 0.12);
+            margin: 0 16px;
+        }
+
+        .brand-mark { width: 56px; height: 56px; margin: 0 auto 14px; display: block; }
+
+        #login-container h1 {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 1.4em;
+            margin: 0 0 8px;
+            color: var(--ink);
+        }
+
+        #login-container p {
+            color: var(--ink-soft);
+            margin: 0 0 26px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .g_id_signin_wrap { display: flex; justify-content: center; }
+
+        #unauthorized-message {
+            display: none;
+            margin-top: 18px;
+            padding: 12px 14px;
+            background: #FBDEE5;
+            color: var(--ruby);
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
         #logout-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
+            position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+            background: linear-gradient(135deg, var(--ruby), var(--marigold));
+            color: #fff; border: none; font-weight: 700;
+            font-family: 'Noto Sans TC', sans-serif;
+            padding: 12px 22px; border-radius: 999px; cursor: pointer;
+            box-shadow: 0 10px 24px rgba(226, 63, 107, 0.35);
         }
     </style>
+
     <script>
-        // 添加從 iframe 來的消息監聽器
         window.addEventListener('message', function(event) {
-            // 確保消息來源是可信的 Google Apps Script
             if (event.origin.includes('script.google.com')) {
                 if (event.data && event.data.type === 'alert') {
-                    // 這裡可以使用更美觀的 modal 取代 alert
                     alert(event.data.message);
                 }
             }
@@ -78,118 +112,104 @@
     </script>
 </head>
 
-<!-- 預設為登入畫面的樣式 -->
 <body class="login-screen">
 
-    <!-- 登入區塊 -->
-    <div id="login-container" class="max-w-md w-full text-center bg-white p-8 rounded-lg shadow-md mx-4">
-        <h1 class="text-2xl font-bold mb-4">歡迎使用記帳網站</h1>
-        <p class="text-gray-600 mb-6">請使用您的 Google 帳號登入以繼續。</p>
-        
+    <div id="login-container">
+        <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="38" cy="50" r="30" fill="#E23F6B" opacity="0.92"/>
+            <circle cx="62" cy="50" r="30" fill="#F2A93B" opacity="0.92"/>
+            <circle cx="50" cy="50" r="10" fill="#FFFDF9"/>
+            <circle cx="50" cy="50" r="4.2" fill="#3A2A22"/>
+        </svg>
+        <h1>Ruby &amp; Laurent 記帳</h1>
+        <p>請使用您的 Google 帳號登入以繼續</p>
+
         <div id="g_id_onload"
              data-client_id="410678975290-8oi970a6a8rhmvdbl4crf3tmfqkbcj6h.apps.googleusercontent.com"
              data-callback="handleCredentialResponse"
              data-auto_prompt="false">
         </div>
-        <div class="g_id_signin"
-             data-type="standard"
-             data-shape="rectangular"
-             data-theme="filled_blue"
-             data-text="signin_with"
-             data-size="large"
-             data-logo_alignment="left">
+        <div class="g_id_signin_wrap">
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="pill"
+                 data-theme="filled_blue"
+                 data-text="signin_with"
+                 data-size="large"
+                 data-logo_alignment="left">
+            </div>
         </div>
 
-        <div id="unauthorized-message" class="hidden mt-4 text-red-500 font-semibold">
+        <div id="unauthorized-message">
             抱歉，您的帳號未被授權使用此服務。
         </div>
     </div>
 
-    <!-- 主要內容區塊 (預設隱藏)，包含您的 iframe -->
     <div id="main-content" class="hidden">
-        <iframe 
-            src="https://script.google.com/macros/s/AKfycbxTaMr4DUhgzShzryHSwsOi2i99ktesmqJTXAxPhEwwbWvodybnWYBDsbtpRXrJhnlk/exec" 
+        <iframe
+            src="https://script.google.com/macros/s/AKfycbxTaMr4DUhgzShzryHSwsOi2i99ktesmqJTXAxPhEwwbWvodybnWYBDsbtpRXrJhnlk/exec"
             frameborder="0"
             allowfullscreen
             allow="fullscreen; modals; alerts"
             scrolling="yes"
             sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-top-navigation">
         </iframe>
-        <!-- 浮動登出按鈕 -->
-        <button id="logout-button" onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300">
-            登出
-        </button>
+        <button id="logout-button" onclick="logout()">登出</button>
     </div>
 
-    <!-- 引入 Google Identity Services 的 JavaScript -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <script>
-        // --- 授權 Email 清單 ---
+        // 注意：這份清單只用來讓網站在點錯帳號時能立刻給出友善提示，
+        // 真正擋住資料存取的授權檢查現在是在 Google Apps Script 後端做的
+        // （即使有人繞過這一層、直接打開 iframe 裡的網址，也一樣會被擋下）。
         const allowedEmails = [
             "lhk0972621304@gmail.com",
-            "so2008087@gmail.com" // 請換成您自己的 email  // 可以加入更多授權 email
+            "so2008087@gmail.com"
         ];
 
-        // 當頁面載入時，檢查 sessionStorage 是否有登入紀錄
         window.onload = function() {
             const userIsLoggedIn = sessionStorage.getItem('userIsLoggedIn');
             const userEmail = sessionStorage.getItem('userEmail');
             if (userIsLoggedIn === 'true' && userEmail && isEmailAllowed(userEmail)) {
-                console.log('偵測到已登入狀態，直接顯示內容。');
-                showContent(userEmail);
-            } else {
-                console.log('使用者未登入或 session 已過期。');
+                showContent();
             }
         };
 
-        // Google 登入成功後的回呼函式
         function handleCredentialResponse(response) {
             const decodedToken = jwt_decode(response.credential);
-            const userEmail = decodedToken.email;
-            
-            if (isEmailAllowed(userEmail)) {
-                console.log(`帳號 ${userEmail} 驗證通過。`);
+            const userEmail = decodedToken ? decodedToken.email : null;
+
+            if (userEmail && isEmailAllowed(userEmail)) {
                 sessionStorage.setItem('userIsLoggedIn', 'true');
                 sessionStorage.setItem('userEmail', userEmail);
-                showContent(userEmail);
+                showContent();
             } else {
-                console.log(`帳號 ${userEmail} 驗證失敗，非授權使用者。`);
                 showUnauthorizedMessage();
             }
         }
 
-        // 檢查 Email 是否在允許清單中
         function isEmailAllowed(email) {
             return allowedEmails.includes(email);
         }
 
-        // 顯示主要內容 (iframe)
-        function showContent(email) {
-            // 移除 body 的登入畫面樣式
+        function showContent() {
             document.body.classList.remove('login-screen');
-            
-            // 隱藏登入容器
             document.getElementById('login-container').classList.add('hidden');
-            
-            // 顯示主要內容容器 (iframe)
             document.getElementById('main-content').classList.remove('hidden');
         }
 
-        // 顯示未授權訊息
         function showUnauthorizedMessage() {
-            document.getElementById('unauthorized-message').classList.remove('hidden');
+            document.getElementById('unauthorized-message').style.display = 'block';
         }
 
-        // 登出函式
         function logout() {
             sessionStorage.removeItem('userIsLoggedIn');
             sessionStorage.removeItem('userEmail');
-            google.accounts.id.disableAutoSelect();
+            if (window.google && google.accounts) google.accounts.id.disableAutoSelect();
             location.reload();
         }
 
-        // 簡易的 JWT 解碼函式
         function jwt_decode(token) {
             try {
                 const base64Url = token.split('.')[1];
